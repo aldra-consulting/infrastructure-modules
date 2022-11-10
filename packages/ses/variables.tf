@@ -21,10 +21,12 @@ variable "environment" {
 variable "from_email" {
   description = "Email address to forward emails from"
   type        = string
+  sensitive   = true
 }
 
 variable "forward_emails" {
   description = "Email forwarding configuration"
   type        = map(list(string))
   default     = {}
+  sensitive   = true
 }
