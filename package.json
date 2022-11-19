@@ -4,6 +4,7 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "terraform fmt -check -diff -recursive packages",
+    "lint:fix": "terraform fmt -diff -recursive packages",
     "commit": "git-cz"
   },
   "config": {
