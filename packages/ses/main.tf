@@ -7,15 +7,20 @@ terraform {
 }
 
 locals {
-  region                  = var.region.name
-  project_name            = var.common.project.name
-  environment             = var.environment.name
-  domain_name             = var.common.project.domain_name
-  environment_domain_name = local.environment == "production" ? local.domain_name : "${local.environment}.${local.domain_name}"
-  namespace               = "${local.project_name}-${local.region}-${local.environment}"
-  from_email              = var.from_email
-  forward_emails          = var.forward_emails
-  tags                    = merge(var.account.tags, var.region.tags, var.environment.tags)
+  region                          = var.region.name
+  project_name                    = var.common.project.name
+  environment                     = var.environment.name
+  domain_name                     = var.common.project.domain_name
+  environment_domain_name         = local.environment == "production" ? local.domain_name : "${local.environment}.${local.domain_name}"
+  namespace                       = "${local.project_name}-${local.region}-${local.environment}"
+  ssm_parameter_ses_configuration = "${local.namespace}-${var.ssm_parameter_ses_configuration}"
+  ses_configuration               = jsondecode(data.aws_ssm_parameter.ses_configuration.value)
+  from_email                      = "${local.ses_configuration.fromUsername}@${local.environment_domain_name}"
+  email_forward_mapping           = local.ses_configuration.emailForwardMapping
+  forward_emails = {
+    for mapping in local.email_forward_mapping : "${mapping.sourceUsername}@${local.environment_domain_name}" => mapping.destinationEmails
+  }
+  tags = merge(var.account.tags, var.region.tags, var.environment.tags)
 }
 
 provider "aws" {}
@@ -28,6 +33,10 @@ data "aws_caller_identity" "current" {}
 
 data "aws_route53_zone" "this" {
   name = local.domain_name
+}
+
+data "aws_ssm_parameter" "ses_configuration" {
+  name = local.ssm_parameter_ses_configuration
 }
 
 resource "aws_ses_domain_identity" "this" {

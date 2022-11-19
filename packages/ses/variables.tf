@@ -18,15 +18,7 @@ variable "environment" {
   type        = object({ name = string, tags = map(string) })
 }
 
-variable "from_email" {
-  description = "Email address to forward emails from"
+variable "ssm_parameter_ses_configuration" {
+  description = "Name of SSM parameter that contains SES configuration (formatted as JSON)"
   type        = string
-  sensitive   = true
-}
-
-variable "forward_emails" {
-  description = "Email forwarding configuration"
-  type        = map(list(string))
-  default     = {}
-  sensitive   = true
 }
