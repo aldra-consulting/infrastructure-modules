@@ -43,7 +43,7 @@ data "aws_acm_certificate" "acm_certificate" {
   provider = aws.virginia
 }
 
-data "aws_iam_policy_document" "s3_bucket_policy_static_website" {
+data "aws_iam_policy_document" "s3_bucket_policy_static_www_website" {
   for_each = { for bucket in local.static_website_s3_buckets : bucket.name => bucket }
 
   statement {
@@ -55,26 +55,25 @@ data "aws_iam_policy_document" "s3_bucket_policy_static_website" {
     actions = ["s3:GetObject"]
 
     resources = [
-      "${module.s3_bucket_static_website[each.key].s3_bucket_arn}/*"
+      "${module.s3_bucket_static_www_website[each.key].s3_bucket_arn}/*"
     ]
 
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
-      values   = [module.cloudfront_static_website[each.key].cloudfront_distribution_arn]
+      values   = [module.cloudfront_static_www_website[each.key].cloudfront_distribution_arn]
     }
   }
 }
 
-module "s3_bucket_static_website" {
+module "s3_bucket_static_www_website" {
   for_each = { for bucket in local.static_website_s3_buckets : bucket.name => bucket }
 
   source = "terraform-aws-modules/s3-bucket/aws"
 
-  bucket              = "${local.namespace}-${each.value.name}"
-  acl                 = "private"
-  force_destroy       = false
-  acceleration_status = "Suspended"
+  bucket = "${local.namespace}-www-${each.value.name}"
+
+  acl = "private"
 
   block_public_acls       = true
   block_public_policy     = true
@@ -92,11 +91,42 @@ module "s3_bucket_static_website" {
   tags = local.tags
 }
 
+module "s3_bucket_static_apex_website" {
+  for_each = { for bucket in local.static_website_s3_buckets : bucket.name => bucket }
+
+  source = "terraform-aws-modules/s3-bucket/aws"
+
+  bucket = "${local.namespace}-apex-${each.value.name}"
+
+  acl = "private"
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  server_side_encryption_configuration = {
+    rule = {
+      apply_server_side_encryption_by_default = {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+
+  website = {
+    redirect_all_requests_to = {
+      host_name = "www.${each.value.domain}"
+    }
+  }
+
+  tags = local.tags
+}
+
 resource "aws_s3_bucket_policy" "s3_bucket_policy" {
   for_each = { for bucket in local.static_website_s3_buckets : bucket.name => bucket }
 
-  bucket = module.s3_bucket_static_website[each.key].s3_bucket_id
-  policy = data.aws_iam_policy_document.s3_bucket_policy_static_website[each.key].json
+  bucket = module.s3_bucket_static_www_website[each.key].s3_bucket_id
+  policy = data.aws_iam_policy_document.s3_bucket_policy_static_www_website[each.key].json
 }
 
 resource "aws_cloudfront_origin_access_control" "default" {
@@ -107,15 +137,15 @@ resource "aws_cloudfront_origin_access_control" "default" {
   signing_protocol                  = "sigv4"
 }
 
-module "cloudfront_static_website" {
+module "cloudfront_static_www_website" {
   for_each = { for bucket in local.static_website_s3_buckets : bucket.name => bucket }
 
   source = "terraform-aws-modules/cloudfront/aws"
 
-  aliases         = [each.value.domain]
+  aliases         = ["www.${each.value.domain}"]
   enabled         = true
   is_ipv6_enabled = true
-  comment         = "${local.namespace}-${each.value.name}-cloudfront-distribution"
+  comment         = "${local.namespace}-${each.value.name}-www-cloudfront-distribution"
   price_class     = "PriceClass_100"
 
   default_root_object = "index.html"
@@ -134,7 +164,7 @@ module "cloudfront_static_website" {
         "HEAD"
       ]
 
-      target_origin_id       = module.s3_bucket_static_website[each.key].s3_bucket_id
+      target_origin_id       = module.s3_bucket_static_www_website[each.key].s3_bucket_id
       viewer_protocol_policy = "redirect-to-https"
       compress               = true
 
@@ -158,7 +188,7 @@ module "cloudfront_static_website" {
         "HEAD"
       ]
 
-      target_origin_id       = module.s3_bucket_static_website[each.key].s3_bucket_id
+      target_origin_id       = module.s3_bucket_static_www_website[each.key].s3_bucket_id
       viewer_protocol_policy = "redirect-to-https"
       compress               = true
 
@@ -182,7 +212,7 @@ module "cloudfront_static_website" {
       "HEAD"
     ]
 
-    target_origin_id       = module.s3_bucket_static_website[each.key].s3_bucket_id
+    target_origin_id       = module.s3_bucket_static_www_website[each.key].s3_bucket_id
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
 
@@ -205,8 +235,8 @@ module "cloudfront_static_website" {
 
   origin = {
     s3 = {
-      domain_name              = module.s3_bucket_static_website[each.key].s3_bucket_bucket_regional_domain_name
-      origin_id                = module.s3_bucket_static_website[each.key].s3_bucket_id
+      domain_name              = module.s3_bucket_static_www_website[each.key].s3_bucket_bucket_regional_domain_name
+      origin_id                = module.s3_bucket_static_www_website[each.key].s3_bucket_id
       origin_access_control_id = aws_cloudfront_origin_access_control.default.id
     }
   }
@@ -214,7 +244,81 @@ module "cloudfront_static_website" {
   tags = local.tags
 }
 
-resource "aws_route53_record" "static_website_cloudfront_distribution_route53_record" {
+module "cloudfront_static_apex_website" {
+  for_each = { for bucket in local.static_website_s3_buckets : bucket.name => bucket }
+
+  source = "terraform-aws-modules/cloudfront/aws"
+
+  aliases         = [each.value.domain]
+  enabled         = true
+  is_ipv6_enabled = true
+  comment         = "${local.namespace}-${each.value.name}-apex-cloudfront-distribution"
+  price_class     = "PriceClass_100"
+
+  default_cache_behavior = {
+    allowed_methods = [
+      "GET",
+      "HEAD",
+      "OPTIONS"
+    ]
+    cached_methods = [
+      "GET",
+      "HEAD"
+    ]
+
+    target_origin_id       = module.s3_bucket_static_apex_website[each.key].s3_bucket_id
+    viewer_protocol_policy = "redirect-to-https"
+    compress               = true
+
+    min_ttl     = 0
+    default_ttl = 3600
+    max_ttl     = 86400
+
+    # CORS-and-SecurityHeadersPolicy ID (see https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-response-headers-policies.html)
+    response_headers_policy_id = "e61eb60c-9c35-4d20-a928-2b84e02af89c"
+  }
+
+  viewer_certificate = {
+    acm_certificate_arn = data.aws_acm_certificate.acm_certificate.arn
+    ssl_support_method  = "sni-only"
+  }
+
+  geo_restriction = {
+    restriction_type = "none"
+  }
+
+  origin = {
+    s3 = {
+      domain_name = module.s3_bucket_static_apex_website[each.key].s3_bucket_website_endpoint
+      origin_id   = module.s3_bucket_static_apex_website[each.key].s3_bucket_id
+
+      custom_origin_config = {
+        http_port              = "80"
+        https_port             = "443"
+        origin_protocol_policy = "http-only"
+        origin_ssl_protocols   = ["TLSv1.2"]
+      }
+    }
+  }
+
+  tags = local.tags
+}
+
+resource "aws_route53_record" "static_www_website_cloudfront_distribution_route53_record" {
+  for_each = { for bucket in local.static_website_s3_buckets : bucket.name => bucket }
+
+  zone_id = data.aws_route53_zone.route53_zone.zone_id
+  name    = "www.${each.value.domain}"
+  type    = "A"
+
+  alias {
+    name                   = module.cloudfront_static_www_website[each.key].cloudfront_distribution_domain_name
+    zone_id                = module.cloudfront_static_www_website[each.key].cloudfront_distribution_hosted_zone_id
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_route53_record" "static_apex_website_cloudfront_distribution_route53_record" {
   for_each = { for bucket in local.static_website_s3_buckets : bucket.name => bucket }
 
   zone_id = data.aws_route53_zone.route53_zone.zone_id
@@ -222,8 +326,8 @@ resource "aws_route53_record" "static_website_cloudfront_distribution_route53_re
   type    = "A"
 
   alias {
-    name                   = module.cloudfront_static_website[each.key].cloudfront_distribution_domain_name
-    zone_id                = module.cloudfront_static_website[each.key].cloudfront_distribution_hosted_zone_id
+    name                   = module.cloudfront_static_apex_website[each.key].cloudfront_distribution_domain_name
+    zone_id                = module.cloudfront_static_apex_website[each.key].cloudfront_distribution_hosted_zone_id
     evaluate_target_health = true
   }
 }
