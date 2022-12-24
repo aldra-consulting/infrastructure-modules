@@ -7,11 +7,6 @@
     "lint:fix": "terraform fmt -diff -recursive packages",
     "commit": "git-cz"
   },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
