@@ -1,5 +1,5 @@
 {
-  "name": "infrastructure-modules",
+  "name": "@aldra/infrastructure-modules",
   "private": true,
   "scripts": {
     "prepare": "husky install",
