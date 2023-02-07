@@ -176,6 +176,78 @@ module "cloudfront_static_www_website" {
       response_headers_policy_id = "e61eb60c-9c35-4d20-a928-2b84e02af89c"
     },
     {
+      path_pattern = "/redirect.html"
+
+      allowed_methods = [
+        "GET",
+        "HEAD",
+        "OPTIONS"
+      ]
+      cached_methods = [
+        "GET",
+        "HEAD"
+      ]
+
+      target_origin_id       = module.s3_bucket_static_www_website[each.key].s3_bucket_id
+      viewer_protocol_policy = "redirect-to-https"
+      compress               = true
+
+      min_ttl     = 0
+      default_ttl = 0
+      max_ttl     = 0
+
+      # CORS-and-SecurityHeadersPolicy ID (see https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-response-headers-policies.html)
+      response_headers_policy_id = "e61eb60c-9c35-4d20-a928-2b84e02af89c"
+    },
+    {
+      path_pattern = "/favicon.svg"
+
+      allowed_methods = [
+        "GET",
+        "HEAD",
+        "OPTIONS"
+      ]
+      cached_methods = [
+        "GET",
+        "HEAD"
+      ]
+
+      target_origin_id       = module.s3_bucket_static_www_website[each.key].s3_bucket_id
+      viewer_protocol_policy = "redirect-to-https"
+      compress               = true
+
+      min_ttl     = 0
+      default_ttl = 0
+      max_ttl     = 0
+
+      # CORS-and-SecurityHeadersPolicy ID (see https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-response-headers-policies.html)
+      response_headers_policy_id = "e61eb60c-9c35-4d20-a928-2b84e02af89c"
+    },
+    {
+      path_pattern = "/sitemap.xml"
+
+      allowed_methods = [
+        "GET",
+        "HEAD",
+        "OPTIONS"
+      ]
+      cached_methods = [
+        "GET",
+        "HEAD"
+      ]
+
+      target_origin_id       = module.s3_bucket_static_www_website[each.key].s3_bucket_id
+      viewer_protocol_policy = "redirect-to-https"
+      compress               = true
+
+      min_ttl     = 0
+      default_ttl = 0
+      max_ttl     = 0
+
+      # CORS-and-SecurityHeadersPolicy ID (see https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-response-headers-policies.html)
+      response_headers_policy_id = "e61eb60c-9c35-4d20-a928-2b84e02af89c"
+    },
+    {
       path_pattern = "/"
 
       allowed_methods = [
