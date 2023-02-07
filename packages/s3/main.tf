@@ -296,6 +296,19 @@ module "cloudfront_static_www_website" {
     response_headers_policy_id = "e61eb60c-9c35-4d20-a928-2b84e02af89c"
   }
 
+  custom_error_response = [
+    {
+      error_code         = 404
+      response_code      = 200
+      response_page_path = "/redirect.html"
+    },
+    {
+      error_code         = 403
+      response_code      = 200
+      response_page_path = "/redirect.html"
+    }
+  ]
+
   viewer_certificate = {
     acm_certificate_arn = data.aws_acm_certificate.acm_certificate.arn
     ssl_support_method  = "sni-only"
