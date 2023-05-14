@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.0](https://github.com/aldra-consulting/infrastructure-modules/compare/ses@0.2.0...ses@0.3.0) (2023-05-14)
+
+
+### Features
+
+* **ses:** add SMTP users without access keys ([89632f5](https://github.com/aldra-consulting/infrastructure-modules/commit/89632f538aeb595897244db5b41ab759c818b501))
+
+
+
 ## [0.2.0](https://github.com/aldra-consulting/infrastructure-modules/compare/ses@0.1.1...ses@0.2.0) (2022-11-19)
 
 
