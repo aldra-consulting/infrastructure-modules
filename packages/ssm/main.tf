@@ -34,3 +34,18 @@ resource "aws_ssm_parameter" "ses_configuration" {
 
   tags = local.tags
 }
+
+resource "aws_ssm_parameter" "ses_smtp_users" {
+  name        = "${local.namespace}-ses-smtp-users"
+  description = "An array of SES SMTP users (formatted as JSON)"
+  type        = "SecureString"
+  value       = var.ses_smtp_users
+
+  lifecycle {
+    ignore_changes = [
+      value
+    ]
+  }
+
+  tags = local.tags
+}

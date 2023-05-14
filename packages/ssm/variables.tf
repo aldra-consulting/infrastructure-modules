@@ -22,3 +22,8 @@ variable "ses_configuration" {
   description = "SES configuration parameters (formatted as JSON)"
   type        = string
 }
+
+variable "ses_smtp_users" {
+  description = "An array of SES SMTP users (formatted as JSON)"
+  type        = string
+}
