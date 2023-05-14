@@ -26,5 +26,11 @@ resource "aws_ssm_parameter" "ses_configuration" {
   type        = "SecureString"
   value       = var.ses_configuration
 
+  lifecycle {
+    ignore_changes = [
+      value
+    ]
+  }
+
   tags = local.tags
 }
