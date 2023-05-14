@@ -14,7 +14,9 @@ locals {
   environment_domain_name         = local.environment == "production" ? local.domain_name : "${local.environment}.${local.domain_name}"
   namespace                       = "${local.project_name}-${local.region}-${local.environment}"
   ssm_parameter_ses_configuration = "${local.namespace}-${var.ssm_parameter_ses_configuration}"
+  ssm_parameter_ses_smtp_users    = "${local.namespace}-${var.ssm_parameter_ses_smtp_users}"
   ses_configuration               = jsondecode(data.aws_ssm_parameter.ses_configuration.value)
+  ses_smtp_users                  = jsondecode(data.aws_ssm_parameter.ses_smtp_users.value)
   from_email                      = "${local.ses_configuration.fromUsername}@${local.environment_domain_name}"
   email_forward_mapping           = local.ses_configuration.emailForwardMapping
   forward_emails = {
@@ -37,6 +39,10 @@ data "aws_route53_zone" "this" {
 
 data "aws_ssm_parameter" "ses_configuration" {
   name = local.ssm_parameter_ses_configuration
+}
+
+data "aws_ssm_parameter" "ses_smtp_users" {
+  name = local.ssm_parameter_ses_smtp_users
 }
 
 resource "aws_ses_domain_identity" "this" {
@@ -233,4 +239,33 @@ data "aws_iam_policy_document" "lambda_read_from_s3_bucket" {
     actions   = ["ses:SendRawEmail"]
     resources = ["*"]
   }
+}
+
+resource "aws_iam_user" "smtp_user" {
+  count = length(local.ses_smtp_users)
+
+  name = local.ses_smtp_users[count.index]
+  tags = local.tags
+}
+
+data "aws_iam_policy_document" "send_mail" {
+  statement {
+    actions   = ["ses:SendRawEmail"]
+    resources = [aws_ses_domain_identity.this.arn]
+  }
+}
+
+resource "aws_iam_policy" "send_mail" {
+  count = length(local.ses_smtp_users)
+
+  name   = "${local.ses_smtp_users[count.index]}-send-mail"
+  policy = data.aws_iam_policy_document.send_mail.json
+  tags   = local.tags
+}
+
+resource "aws_iam_user_policy_attachment" "send_mail" {
+  count = length(local.ses_smtp_users)
+
+  policy_arn = aws_iam_policy.send_mail[count.index].arn
+  user       = aws_iam_user.smtp_user[count.index].name
 }

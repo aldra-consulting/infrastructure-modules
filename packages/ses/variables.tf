@@ -22,3 +22,8 @@ variable "ssm_parameter_ses_configuration" {
   description = "Name of SSM parameter that contains SES configuration (formatted as JSON)"
   type        = string
 }
+
+variable "ssm_parameter_ses_smtp_users" {
+  description = "Name of SSM parameter that contains SES SMTP users (formatted as JSON)"
+  type        = string
+}
