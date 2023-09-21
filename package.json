@@ -1,6 +1,17 @@
 {
   "$schema": "https://json.schemastore.org/package",
   "name": "@aldra-consulting/infrastructure-modules",
+  "description": "A collection of reusable infrastructure modules.",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:aldra-consulting/infrastructure-modules.git"
+  },
+  "contributors": [
+    {
+      "name": "Alexander Zakharov (azaxarov)",
+      "email": "alexander.zakharov@aldra.no"
+    }
+  ],
   "private": true,
   "engines": {
     "node": ">=18",
