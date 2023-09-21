@@ -12,6 +12,7 @@
       "email": "alexander.zakharov@aldra.no"
     }
   ],
+  "license": "UNLICENSED",
   "private": true,
   "engines": {
     "node": ">=18",
