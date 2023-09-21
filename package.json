@@ -18,6 +18,9 @@
     "node": ">=18",
     "npm": ">=9"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "prepare": "husky install",
     "lint": "terraform fmt -check -diff -recursive packages",
