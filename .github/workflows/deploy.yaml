@@ -5,6 +5,9 @@ on:
     branches:
       - master
 
+env:
+  HUSKY: 0
+
 jobs:
   release:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
