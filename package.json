@@ -1,6 +1,10 @@
 {
   "name": "@aldra-consulting/infrastructure-modules",
   "private": true,
+  "engines": {
+    "node": ">=18",
+    "npm": ">=9"
+  },
   "scripts": {
     "prepare": "husky install",
     "lint": "terraform fmt -check -diff -recursive packages",
