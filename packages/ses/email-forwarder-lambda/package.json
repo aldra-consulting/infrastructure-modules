@@ -8,7 +8,7 @@
       "email": "alexander.zakharov@aldra.no"
     }
   ],
-  "license": "MIT",
+  "license": "UNLICENSED",
   "private": true,
   "engines": {
     "node": ">= 16"
