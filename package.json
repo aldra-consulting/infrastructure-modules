@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package",
   "name": "@aldra-consulting/infrastructure-modules",
   "private": true,
   "engines": {
