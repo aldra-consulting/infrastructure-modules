@@ -7,22 +7,18 @@ terraform {
 }
 
 locals {
-  region                          = var.region.name
-  project_name                    = var.common.project.name
-  environment                     = var.environment.name
-  domain_name                     = var.common.project.domain_name
-  environment_domain_name         = local.environment == "production" ? local.domain_name : "${local.environment}.${local.domain_name}"
-  namespace                       = "${local.project_name}-${local.region}-${local.environment}"
-  ssm_parameter_ses_configuration = "${local.namespace}-${var.ssm_parameter_ses_configuration}"
-  ssm_parameter_ses_smtp_users    = "${local.namespace}-${var.ssm_parameter_ses_smtp_users}"
-  ses_configuration               = jsondecode(data.aws_ssm_parameter.ses_configuration.value)
-  ses_smtp_users                  = jsondecode(data.aws_ssm_parameter.ses_smtp_users.value)
-  from_email                      = "${local.ses_configuration.fromUsername}@${local.environment_domain_name}"
-  email_forward_mapping           = local.ses_configuration.emailForwardMapping
+  region                  = var.region.name
+  root_domain_name        = var.common.project.domain_name
+  environment_domain_name = var.environment.project.domain_name
+  namespace               = var.namespace
+  ses_configuration       = jsondecode(data.aws_ssm_parameter.ses_configuration.value)
+  ses_smtp_users          = jsondecode(data.aws_ssm_parameter.ses_smtp_users.value)
+  from_email              = "${local.ses_configuration.fromUsername}@${local.environment_domain_name}"
+  email_forward_mapping   = local.ses_configuration.emailForwardMapping
   forward_emails = {
     for mapping in local.email_forward_mapping : "${mapping.sourceUsername}@${local.environment_domain_name}" => mapping.destinationEmails
   }
-  tags = merge(var.account.tags, var.region.tags, var.environment.tags)
+  tags = var.tags
 }
 
 provider "aws" {}
@@ -34,15 +30,15 @@ provider "aws" {}
 data "aws_caller_identity" "current" {}
 
 data "aws_route53_zone" "this" {
-  name = local.domain_name
+  name = local.root_domain_name
 }
 
 data "aws_ssm_parameter" "ses_configuration" {
-  name = local.ssm_parameter_ses_configuration
+  name = var.ssm_parameter_ses_configuration
 }
 
 data "aws_ssm_parameter" "ses_smtp_users" {
-  name = local.ssm_parameter_ses_smtp_users
+  name = var.ssm_parameter_ses_smtp_users
 }
 
 resource "aws_ses_domain_identity" "this" {
