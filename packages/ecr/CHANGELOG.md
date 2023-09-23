@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/aldra-consulting/infrastructure-modules/compare/ecr@0.1.0...ecr@0.1.1) (2023-09-23)
+
+
+### Bug Fixes
+
+* **ecr:** change username of IAM user ([1d7cf8c](https://github.com/aldra-consulting/infrastructure-modules/commit/1d7cf8c3be1c0e6d0c824e9ccde641414e51312b))
+
+
+
 ## 0.1.0 (2023-09-23)
 
 
