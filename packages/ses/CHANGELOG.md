@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.0](https://github.com/aldra-consulting/infrastructure-modules/compare/ses@0.3.0...ses@0.4.0) (2023-09-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ses:** change input variables
+
+### Features
+
+* **ses:** change input variables ([1550f6d](https://github.com/aldra-consulting/infrastructure-modules/commit/1550f6d7bd3f0f6097bc98638c8b01266dda719b))
+
+
+
 ## [0.3.0](https://github.com/aldra-consulting/infrastructure-modules/compare/ses@0.2.0...ses@0.3.0) (2023-05-14)
 
 

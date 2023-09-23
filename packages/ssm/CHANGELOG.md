@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.0](https://github.com/aldra-consulting/infrastructure-modules/compare/ssm@0.2.0...ssm@0.3.0) (2023-09-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ssm:** change input variables
+
+### Features
+
+* **ssm:** change input variables ([a9ca5c0](https://github.com/aldra-consulting/infrastructure-modules/commit/a9ca5c03c31005f4d90066ba6d61999f5faea0b6))
+
+
+
 ## [0.2.0](https://github.com/aldra-consulting/infrastructure-modules/compare/ssm@0.1.0...ssm@0.2.0) (2023-05-14)
 
 
