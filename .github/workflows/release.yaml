@@ -37,7 +37,7 @@ jobs:
 
       - name: Count changed packages
         id: changes
-        run: echo "count=$(npx lerna changed -p | wc -l | xargs)" >> "$GITHUB_OUTPUT"
+        run: echo "count=$(npx lerna changed -a -p | wc -l | xargs)" >> "$GITHUB_OUTPUT"
 
       - name: Import GPG key for Aldra GitHub Bot
         id: gpg
