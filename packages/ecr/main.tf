@@ -37,11 +37,11 @@ module "ecr" {
   repository_image_tag_mutability = "MUTABLE"
 
   repository_read_access_arns = [
-    data.aws_iam_user.alzak.arn,
+    data.aws_iam_user.alexander_zakharov.arn,
     data.aws_iam_user.github.arn
   ]
   repository_read_write_access_arns = [
-    data.aws_iam_user.alzak.arn,
+    data.aws_iam_user.alexander_zakharov.arn,
     data.aws_iam_user.github.arn
   ]
 
