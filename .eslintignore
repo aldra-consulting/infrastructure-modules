@@ -4,8 +4,6 @@
 .husky
 .vscode
 
-dist
-coverage
 node_modules
 
 .gitignore

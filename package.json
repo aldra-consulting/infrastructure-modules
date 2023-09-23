@@ -22,10 +22,16 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "husky install",
-    "lint": "terraform fmt -check -diff -recursive packages",
-    "lint:fix": "terraform fmt -diff -recursive packages",
-    "commit": "cz"
+    "commit": "cz",
+    "lint": "run-p lint:eslint lint:terraform",
+    "lint:eslint": "eslint --ext json .",
+    "lint:eslint:fix": "eslint --ext json . --fix",
+    "lint:eslint:staged:fix": "eslint --ext json --fix",
+    "lint:fix": "run-p lint:eslint:fix lint:terraform:fix",
+    "lint:staged:fix": "run-p lint:eslint:staged:fix -- {@}",
+    "lint:terraform": "terraform fmt -check -diff -recursive packages",
+    "lint:terraform:fix": "terraform fmt -diff -recursive packages",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
@@ -33,9 +39,12 @@
     "commitizen": "^4.3.0",
     "conventional-changelog-conventionalcommits": "^7.0.2",
     "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.49.0",
+    "eslint-plugin-json-format": "^2.0.1",
     "husky": "^8.0.3",
     "lerna": "^7.3.0",
     "lint-staged": "^14.0.1",
+    "npm-run-all": "^4.1.5",
     "nx": "^16.8.1"
   }
 }

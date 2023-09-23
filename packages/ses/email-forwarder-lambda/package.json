@@ -13,22 +13,22 @@
   "engines": {
     "node": ">= 16"
   },
-  "main": "src/index.ts",
   "scripts": {
     "build": "run-s clean:dist typescript:compile typescript:paths",
-    "typescript:compile": "tsc -p tsconfig.json",
-    "typescript:paths": "tsc-alias -p tsconfig.json",
-    "lint:project": "eslint --ext ts,js ./",
-    "lint:project:fix": "eslint --ext ts,js ./ --fix",
-    "lint:staged:fix": "eslint --ext ts,js --fix",
-    "clean:dist": "rm -rf dist",
     "clean:coverage": "rm -rf coverage",
+    "clean:dist": "rm -rf dist",
+    "lint:project": "eslint --ext ts,js,json ./",
+    "lint:project:fix": "eslint --ext ts,js,json ./ --fix",
+    "lint:staged:fix": "eslint --ext ts,js,json --fix",
     "test": "run-s clean:coverage test:jest",
     "test:coverage": "run-s clean:coverage test:jest:coverage",
     "test:jest": "jest --passWithNoTests",
     "test:jest:coverage": "jest --passWithNoTests --coverage",
-    "test:watch": "jest --passWithNoTests --watchAll"
+    "test:watch": "jest --passWithNoTests --watchAll",
+    "typescript:compile": "tsc -p tsconfig.json",
+    "typescript:paths": "tsc-alias -p tsconfig.json"
   },
+  "main": "src/index.ts",
   "dependencies": {
     "aws-lambda": "^1.0.7",
     "aws-sdk": "^2.1217.0",
