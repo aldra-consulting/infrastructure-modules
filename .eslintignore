@@ -15,3 +15,5 @@ README.md
 !.*.json
 
 package-lock.json
+
+packages/ses/email-forwarder-lambda
