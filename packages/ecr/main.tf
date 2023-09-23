@@ -18,8 +18,8 @@ provider "aws" {}
 # Module configuration
 # ------------------------------------------------------------------------------
 
-data "aws_iam_user" "alzak" {
-  user_name = "alzak"
+data "aws_iam_user" "alexander_zakharov" {
+  user_name = "alexander.zakharov"
 }
 
 data "aws_iam_user" "github" {
