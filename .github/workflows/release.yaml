@@ -53,6 +53,6 @@ jobs:
 
       - name: Release affected packages
         if: ${{ fromJson(steps.changes.outputs.count) > 0 }}
-        run: npx lerna publish --yes
+        run: npx lerna version --yes
         env:
           GH_TOKEN: ${{ secrets.ALDRA_GITHUB_BOT_TOKEN }}
