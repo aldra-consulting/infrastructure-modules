@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.0](https://github.com/aldra-consulting/infrastructure-modules/compare/route-53@0.2.0...route-53@0.3.0) (2023-10-03)
+
+
+### Features
+
+* **route-53:** add TXT DNS record for GitHub Pages ([ddc2bc6](https://github.com/aldra-consulting/infrastructure-modules/commit/ddc2bc69288823c78c9c0e9a1ecbe7ee9e434908))
+
+
+
 ## [0.2.0](https://github.com/aldra-consulting/infrastructure-modules/compare/route-53@0.1.0...route-53@0.2.0) (2023-09-23)
 
 
