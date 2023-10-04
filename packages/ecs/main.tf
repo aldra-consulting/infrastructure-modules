@@ -18,7 +18,7 @@ provider "aws" {}
 # ------------------------------------------------------------------------------
 
 module "ecs_cluster" {
-  source = "terraform-aws-modules/ecs/aws"
+  source = "terraform-aws-modules/ecs/aws//modules/cluster"
 
   cluster_name = "${local.namespace}-ecs-cluster"
 
