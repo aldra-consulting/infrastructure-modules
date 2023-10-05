@@ -77,6 +77,12 @@ module "vpc_endpoints" {
       subnet_ids          = module.vpc.private_subnets
       tags                = merge(local.tags, { Name = "ecr.api-vpc-endpoint" })
     },
+    logs = {
+      service             = "logs"
+      private_dns_enabled = true
+      subnet_ids          = module.vpc.private_subnets
+      tags                = merge(local.tags, { Name = "logs-vpc-endpoint" })
+    },
   }
 
   tags = local.tags
