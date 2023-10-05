@@ -55,6 +55,7 @@ module "vpc_endpoints" {
   endpoints = {
     s3 = {
       service         = "s3"
+      service_type    = "Gateway"
       route_table_ids = module.vpc.private_route_table_ids
       tags            = merge(local.tags, { Name = "s3-vpc-endpoint" })
     },
