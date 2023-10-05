@@ -27,3 +27,13 @@ variable "tags" {
   description = "Tags"
   type        = map(string)
 }
+
+variable "vpc" {
+  description = "VPC attributes"
+  type        = object({ id = string, private_subnets = list(string) })
+}
+
+variable "services" {
+  description = "List of ECS service definitions"
+  type        = list(object({ name = string, environment = map(string) }))
+}

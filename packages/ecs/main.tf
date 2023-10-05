@@ -9,6 +9,8 @@ terraform {
 locals {
   namespace = var.namespace
   tags      = var.tags
+  vpc       = var.vpc
+  services  = var.services
 }
 
 provider "aws" {}
@@ -29,6 +31,130 @@ module "ecs_cluster" {
       }
     }
   }
+
+  tags = local.tags
+}
+
+data "aws_ecr_repository" "this" {
+  for_each = { for service in local.services : service.name => service }
+
+  name = "${local.namespace}-${each.key}"
+}
+
+data "aws_ecr_image" "this" {
+  for_each = { for service in local.services : service.name => service }
+
+  repository_name = data.aws_ecr_repository.this[each.key].name
+  image_tag       = "latest"
+}
+
+resource "aws_service_discovery_http_namespace" "this" {
+  name        = "${local.namespace}-http-namespace"
+  description = "Namespace for ${module.ecs_cluster.name}"
+  tags        = local.tags
+}
+
+module "load_balancer" {
+  for_each = { for service in local.services : service.name => service }
+
+  source = "terraform-aws-modules/alb/aws"
+
+  name = each.key
+
+  load_balancer_type = "network"
+
+  vpc_id  = local.vpc.id
+  subnets = local.vpc.private_subnets
+
+  internal = true
+
+  http_tcp_listeners = [
+    {
+      port               = 80
+      protocol           = "TCP"
+      target_group_index = 0
+    }
+  ]
+
+  target_groups = [
+    {
+      name             = each.key
+      backend_protocol = "TCP"
+      backend_port     = 8000
+      target_type      = "ip"
+      health_check = {
+        enabled             = true
+        interval            = 10
+        path                = "/health"
+        port                = "traffic-port"
+        healthy_threshold   = 3
+        unhealthy_threshold = 3
+        timeout             = 6
+        protocol            = "HTTP"
+        matcher             = "200"
+      }
+    },
+  ]
+
+  tags = local.tags
+}
+
+module "ecs_service" {
+  for_each = { for service in local.services : service.name => service }
+
+  source = "terraform-aws-modules/ecs/aws//modules/service"
+
+  name        = each.key
+  cluster_arn = module.ecs_cluster.arn
+
+  cpu    = 256
+  memory = 512
+
+  container_definitions = {
+    (each.key) = {
+      cpu       = 256
+      memory    = 512
+      essential = true
+      image     = "${data.aws_ecr_repository.this[each.key].repository_url}@${data.aws_ecr_image.this[each.key].id}"
+      port_mappings = [
+        {
+          name          = each.key
+          containerPort = 8000
+          hostPort      = 8000
+          protocol      = "tcp"
+        }
+      ]
+      environment = [
+        for key, value in each.value.environment :
+        {
+          name  = key
+          value = value
+        }
+      ]
+    }
+  }
+
+  service_connect_configuration = {
+    namespace = aws_service_discovery_http_namespace.this.arn
+    service = {
+      client_alias = {
+        port     = 8000
+        dns_name = each.key
+      }
+      port_name      = each.key
+      discovery_name = each.key
+    }
+  }
+
+  load_balancer = {
+    service = {
+      target_group_arn = element(module.load_balancer[each.key].target_group_arns, 0)
+      container_name   = each.key
+      container_port   = 8000
+    }
+  }
+
+  subnet_ids = local.vpc.private_subnets
 
   tags = local.tags
 }
