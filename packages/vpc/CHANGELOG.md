@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.0](https://github.com/aldra-consulting/infrastructure-modules/compare/vpc@0.3.0...vpc@0.4.0) (2023-10-07)
+
+
+### Features
+
+* **vpc:** add Secrets Manager VPC endpoint ([74789f4](https://github.com/aldra-consulting/infrastructure-modules/commit/74789f466e5e83ad5eeb955f7077cc24c7ccec79))
+
+
+
 ## [0.3.0](https://github.com/aldra-consulting/infrastructure-modules/compare/vpc@0.2.0...vpc@0.3.0) (2023-10-05)
 
 
