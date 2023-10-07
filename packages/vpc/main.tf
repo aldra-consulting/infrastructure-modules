@@ -65,6 +65,12 @@ module "vpc_endpoints" {
       route_table_ids = module.vpc.private_route_table_ids
       tags            = merge(local.tags, { Name = "dynamodb-vpc-endpoint" })
     },
+    secretsmanager = {
+      service             = "secretsmanager"
+      private_dns_enabled = true
+      subnet_ids          = module.vpc.private_subnets
+      tags                = merge(local.tags, { Name = "secretsmanager-vpc-endpoint" })
+    }
     ecr_dkr = {
       service             = "ecr.dkr"
       private_dns_enabled = true
