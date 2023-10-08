@@ -86,10 +86,10 @@ module "load_balancer" {
         enabled             = true
         interval            = 10
         path                = "/health"
-        port                = "traffic-port"
+        port                = 8000
         healthy_threshold   = 3
         unhealthy_threshold = 3
-        timeout             = 6
+        timeout             = 10
         protocol            = "HTTP"
         matcher             = "200"
       }
