@@ -107,13 +107,13 @@ module "ecs_service" {
   name        = each.key
   cluster_arn = module.ecs_cluster.arn
 
-  cpu    = 256
-  memory = 512
+  cpu    = 512
+  memory = 1024
 
   container_definitions = {
     (each.key) = {
-      cpu       = 256
-      memory    = 512
+      cpu       = 512
+      memory    = 1024
       essential = true
       image     = "${data.aws_ecr_repository.this[each.key].repository_url}@${data.aws_ecr_image.this[each.key].id}"
       port_mappings = [
