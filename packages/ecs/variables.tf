@@ -30,7 +30,7 @@ variable "tags" {
 
 variable "vpc" {
   description = "VPC attributes"
-  type        = object({ id = string, private_subnets = list(string) })
+  type        = object({ id = string, private_subnets = list(string), private_subnets_cidr_blocks = list(string) })
 }
 
 variable "services" {
