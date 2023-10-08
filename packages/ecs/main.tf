@@ -63,10 +63,10 @@ module "load_balancer" {
 
   load_balancer_type = "network"
 
+  internal = true
+
   vpc_id  = local.vpc.id
   subnets = local.vpc.private_subnets
-
-  internal = true
 
   http_tcp_listeners = [
     {
