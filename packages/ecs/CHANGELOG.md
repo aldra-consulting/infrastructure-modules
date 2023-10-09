@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.1](https://github.com/aldra-consulting/infrastructure-modules/compare/ecs@0.3.0...ecs@0.3.1) (2023-10-09)
+
+
+### Bug Fixes
+
+* **ecs:** allow all outgoing traffic ([290c779](https://github.com/aldra-consulting/infrastructure-modules/commit/290c779a84b206411ee1f983dfd029fc3bc351ad))
+
+
+
 ## [0.3.0](https://github.com/aldra-consulting/infrastructure-modules/compare/ecs@0.2.0...ecs@0.3.0) (2023-10-09)
 
 
