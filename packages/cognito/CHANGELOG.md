@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.0](https://github.com/aldra-consulting/infrastructure-modules/compare/cognito@0.1.0...cognito@0.2.0) (2023-10-09)
+
+
+### Features
+
+* **cognito:** add output ([ba40471](https://github.com/aldra-consulting/infrastructure-modules/commit/ba40471bed65a76bcd9ace40c0d1ace4728cd533))
+
+
+
 ## 0.1.0 (2023-09-23)
 
 
