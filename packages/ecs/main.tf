@@ -48,12 +48,6 @@ data "aws_ecr_image" "this" {
   image_tag       = "latest"
 }
 
-resource "aws_service_discovery_http_namespace" "this" {
-  name        = "${local.namespace}-http-namespace"
-  description = "Namespace for ${module.ecs_cluster.name}"
-  tags        = local.tags
-}
-
 module "load_balancer" {
   for_each = { for service in local.services : service.name => service }
 
@@ -131,18 +125,6 @@ module "ecs_service" {
           value = value
         }
       ]
-    }
-  }
-
-  service_connect_configuration = {
-    namespace = aws_service_discovery_http_namespace.this.arn
-    service = {
-      client_alias = {
-        port     = 8000
-        dns_name = each.key
-      }
-      port_name      = each.key
-      discovery_name = each.key
     }
   }
 
