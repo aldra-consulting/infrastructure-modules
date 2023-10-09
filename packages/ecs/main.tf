@@ -152,7 +152,7 @@ module "ecs_service" {
       from_port   = 0
       to_port     = 0
       protocol    = "-1"
-      cidr_blocks = local.vpc.private_subnets_cidr_blocks
+      cidr_blocks = ["0.0.0.0/0"]
     }
   }
 
