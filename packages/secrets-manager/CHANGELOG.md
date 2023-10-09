@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.0](https://github.com/aldra-consulting/infrastructure-modules/compare/secrets-manager@0.1.0...secrets-manager@0.2.0) (2023-10-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **secrets-manager:** simplify module structure
+
+### Features
+
+* **secrets-manager:** simplify module structure ([bf18c5a](https://github.com/aldra-consulting/infrastructure-modules/commit/bf18c5a65eac73860b74da940e938aa09be4aa7c))
+
+
+
 ## 0.1.0 (2023-09-23)
 
 
