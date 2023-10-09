@@ -28,16 +28,7 @@ variable "tags" {
   type        = map(string)
 }
 
-variable "oidc_jwks_secret" {
-  description = "JWKS for OIDC auth server"
-  type        = string
-  nullable    = false
-  sensitive   = true
-}
-
-variable "oidc_cookie_keys_secret" {
-  description = "Cookie signing keys for OIDC auth server"
-  type        = string
-  nullable    = false
-  sensitive   = true
+variable "secrets" {
+  description = "List of secret definitions"
+  type        = list(object({ name = string, value = string }))
 }
