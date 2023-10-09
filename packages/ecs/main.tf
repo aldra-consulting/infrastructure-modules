@@ -74,13 +74,13 @@ module "load_balancer" {
     {
       name             = each.key
       backend_protocol = "TCP"
-      backend_port     = 8000
+      backend_port     = each.value.port
       target_type      = "ip"
       health_check = {
         enabled             = true
         interval            = 10
         path                = "/health"
-        port                = 8000
+        port                = each.value.port
         healthy_threshold   = 3
         unhealthy_threshold = 3
         timeout             = 10
@@ -113,8 +113,8 @@ module "ecs_service" {
       port_mappings = [
         {
           name          = each.key
-          containerPort = 8000
-          hostPort      = 8000
+          containerPort = each.value.port
+          hostPort      = each.value.port
           protocol      = "tcp"
         }
       ]
@@ -132,7 +132,7 @@ module "ecs_service" {
     service = {
       target_group_arn = element(module.load_balancer[each.key].target_group_arns, 0)
       container_name   = each.key
-      container_port   = 8000
+      container_port   = each.value.port
     }
   }
 
@@ -141,8 +141,8 @@ module "ecs_service" {
   security_group_rules = {
     ingress_nlb = {
       type        = "ingress"
-      from_port   = 8000
-      to_port     = 8000
+      from_port   = each.value.port
+      to_port     = each.value.port
       protocol    = "tcp"
       cidr_blocks = local.vpc.private_subnets_cidr_blocks
       description = "Service port"
