@@ -156,5 +156,7 @@ module "ecs_service" {
     }
   }
 
+  tasks_iam_role_statements = each.value.task_iam_policy_statements
+
   tags = local.tags
 }
