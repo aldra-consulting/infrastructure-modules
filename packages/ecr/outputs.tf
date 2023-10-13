@@ -3,6 +3,11 @@ output "repository_arn" {
   value       = { for key, value in module.ecr : key => value.repository_arn }
 }
 
+output "repository_name" {
+  description = "Full ARN of the repository"
+  value       = { for key, value in module.ecr : key => "${local.namespace}-${key}" }
+}
+
 output "repository_registry_id" {
   description = "The registry ID where the repository was created"
   value       = { for key, value in module.ecr : key => value.repository_registry_id }
