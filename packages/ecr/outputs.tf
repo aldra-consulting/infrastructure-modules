@@ -17,3 +17,8 @@ output "repository_url" {
   description = "The URL of the repository"
   value       = { for key, value in module.ecr : key => value.repository_url }
 }
+
+output "latest_image_tag_id" {
+  description = "The ID of the latest image tag"
+  value       = { for key, value in module.ecr : key => data.aws_ecr_image.this[key].id }
+}
