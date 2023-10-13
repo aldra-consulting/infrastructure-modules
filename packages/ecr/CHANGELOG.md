@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.4](https://github.com/aldra-consulting/infrastructure-modules/compare/ecr@0.1.3...ecr@0.1.4) (2023-10-13)
+
+
+### Bug Fixes
+
+* **ecr:** add latest image tag ID as output ([c89495e](https://github.com/aldra-consulting/infrastructure-modules/commit/c89495e1161cb6c2ef2eaf85802c21ff5bb89f59))
+
+
+
 ## [0.1.3](https://github.com/aldra-consulting/infrastructure-modules/compare/ecr@0.1.2...ecr@0.1.3) (2023-10-13)
 
 
