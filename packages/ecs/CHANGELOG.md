@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.0](https://github.com/aldra-consulting/infrastructure-modules/compare/ecs@0.3.1...ecs@0.4.0) (2023-10-13)
+
+
+### Features
+
+* **ecs:** add task_iam_policy_statements to service definition input ([e9f327f](https://github.com/aldra-consulting/infrastructure-modules/commit/e9f327fe9e17d62680984f4a334a10190120ea96))
+
+
+
 ## [0.3.1](https://github.com/aldra-consulting/infrastructure-modules/compare/ecs@0.3.0...ecs@0.3.1) (2023-10-09)
 
 

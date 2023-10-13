@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.3](https://github.com/aldra-consulting/infrastructure-modules/compare/ecr@0.1.2...ecr@0.1.3) (2023-10-13)
+
+
+### Bug Fixes
+
+* **ecr:** add ECR repository name output ([533e6a4](https://github.com/aldra-consulting/infrastructure-modules/commit/533e6a4df323c04009ab10ede95e9a78e4915947))
+
+
+
 ## [0.1.2](https://github.com/aldra-consulting/infrastructure-modules/compare/ecr@0.1.1...ecr@0.1.2) (2023-09-23)
 
 
