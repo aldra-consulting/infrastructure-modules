@@ -40,19 +40,6 @@ module "ecs_cluster" {
   tags = local.tags
 }
 
-data "aws_ecr_repository" "this" {
-  for_each = { for service in local.services : service.name => service }
-
-  name = "${local.namespace}-${each.key}"
-}
-
-data "aws_ecr_image" "this" {
-  for_each = { for service in local.services : service.name => service }
-
-  repository_name = data.aws_ecr_repository.this[each.key].name
-  image_tag       = "latest"
-}
-
 module "acm" {
   for_each = { for service in local.services : service.name => service }
 
@@ -135,7 +122,7 @@ module "ecs_service" {
       cpu       = each.value.cpu
       memory    = each.value.memory
       essential = true
-      image     = "${data.aws_ecr_repository.this[each.key].repository_url}@${data.aws_ecr_image.this[each.key].id}"
+      image     = value.image
       port_mappings = [
         {
           name          = each.key
