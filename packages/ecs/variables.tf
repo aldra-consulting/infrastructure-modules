@@ -36,12 +36,20 @@ variable "vpc" {
 variable "services" {
   description = "List of ECS service definitions"
   type = list(object({
-    name                     = string,
-    port                     = number,
-    cpu                      = number,
-    memory                   = number,
-    environment              = optional(map(string), {}),
-    readonly_root_filesystem = optional(bool, true)
+    name    = string
+    ingress = string
+    port    = number
+    cpu     = number
+    memory  = number
+    container_definitions = map(object({
+      image                    = string
+      container_port           = number
+      host_port                = number
+      cpu                      = number
+      memory                   = number
+      environment              = optional(map(string), {})
+      readonly_root_filesystem = optional(bool, true)
+    }))
     task_iam_policy_statements = map(object({
       effect    = string
       actions   = list(string)

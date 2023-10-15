@@ -118,21 +118,21 @@ module "ecs_service" {
   memory = each.value.memory
 
   container_definitions = {
-    (each.key) = {
-      cpu       = each.value.cpu
-      memory    = each.value.memory
+    for key, value in each.value.container_definitions : key => {
+      cpu       = value.cpu
+      memory    = value.memory
       essential = true
       image     = value.image
       port_mappings = [
         {
-          name          = each.key
-          containerPort = each.value.port
-          hostPort      = each.value.port
+          name          = key
+          containerPort = value.container_port
+          hostPort      = value.host_port
           protocol      = "tcp"
         }
       ]
       environment = [
-        for key, value in each.value.environment :
+        for key, value in value.environment :
         {
           name  = key
           value = value
@@ -145,7 +145,7 @@ module "ecs_service" {
   load_balancer = {
     service = {
       target_group_arn = element(module.load_balancer[each.key].target_group_arns, 0)
-      container_name   = each.key
+      container_name   = each.value.ingress
       container_port   = each.value.port
     }
   }
