@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.0](https://github.com/aldra-consulting/infrastructure-modules/compare/ecs@0.4.0...ecs@0.5.0) (2023-10-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ecs:** add container_definitions input parameter
+
+### Features
+
+* **ecs:** add container_definitions input parameter ([cf5a527](https://github.com/aldra-consulting/infrastructure-modules/commit/cf5a527bc12bdcc9c9a0a5ad3b401b77508ca6f6))
+* **ecs:** add read_only_filesystem configuration parameter ([37a3db0](https://github.com/aldra-consulting/infrastructure-modules/commit/37a3db00109a353aa4eeee29c2ac8a8e1537f24e))
+* **ecs:** externalise container image configuration ([349eadc](https://github.com/aldra-consulting/infrastructure-modules/commit/349eadc16fefd099d997cb352a5ab2f9e6909bf5))
+* **ecs:** use HTTPS load balancer listensers ([c1f4bb3](https://github.com/aldra-consulting/infrastructure-modules/commit/c1f4bb35404a70d6f448f655d9f6e73a0c9b631a))
+
+
+### Bug Fixes
+
+* **ecs:** set correct environment parameter type ([2137ed9](https://github.com/aldra-consulting/infrastructure-modules/commit/2137ed99364abbfc301c11ea6fbe022c77d1a241))
+
+
+
 ## [0.4.0](https://github.com/aldra-consulting/infrastructure-modules/compare/ecs@0.3.1...ecs@0.4.0) (2023-10-13)
 
 
