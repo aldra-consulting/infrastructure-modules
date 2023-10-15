@@ -7,10 +7,11 @@ terraform {
 }
 
 locals {
-  namespace = var.namespace
-  tags      = var.tags
-  vpc       = var.vpc
-  services  = var.services
+  environment = var.environment
+  namespace   = var.namespace
+  tags        = var.tags
+  vpc         = var.vpc
+  services    = var.services
 }
 
 provider "aws" {}
@@ -18,6 +19,10 @@ provider "aws" {}
 # ------------------------------------------------------------------------------
 # Module configuration
 # ------------------------------------------------------------------------------
+
+data "aws_route53_zone" "this" {
+  name = local.environment.project.domain_name
+}
 
 module "ecs_cluster" {
   source = "terraform-aws-modules/ecs/aws//modules/cluster"
@@ -48,6 +53,24 @@ data "aws_ecr_image" "this" {
   image_tag       = "latest"
 }
 
+module "acm" {
+  for_each = { for service in local.services : service.name => service }
+
+  source = "terraform-aws-modules/acm/aws"
+
+  zone_id = data.aws_route53_zone.this.id
+
+  domain_name = local.environment.project.domain_name
+
+  subject_alternative_names = [
+    "*.${local.environment.project.domain_name}",
+  ]
+
+  validation_method = "DNS"
+
+  tags = local.tags
+}
+
 module "load_balancer" {
   for_each = { for service in local.services : service.name => service }
 
@@ -62,12 +85,15 @@ module "load_balancer" {
   vpc_id  = local.vpc.id
   subnets = local.vpc.private_subnets
 
-  http_tcp_listeners = [
+  https_listeners = [
     {
-      port               = 80
-      protocol           = "TCP"
+      port               = 443
+      protocol           = "TLS"
+      certificate_arn    = module.acm[each.key].acm_certificate_arn
+      ssl_policy         = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+      alpn_policy        = "HTTP2Only"
       target_group_index = 0
-    }
+    },
   ]
 
   target_groups = [
