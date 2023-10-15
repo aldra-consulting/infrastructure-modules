@@ -138,6 +138,7 @@ module "ecs_service" {
           value = value
         }
       ]
+      readonly_root_filesystem = value.readonly_root_filesystem
     }
   }
 
