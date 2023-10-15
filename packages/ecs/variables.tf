@@ -41,7 +41,7 @@ variable "services" {
     cpu         = number,
     memory      = number,
     image       = string
-    environment = map(string),
+    environment = optional(map(string), {}),
     task_iam_policy_statements = map(object({
       effect    = string
       actions   = list(string)
