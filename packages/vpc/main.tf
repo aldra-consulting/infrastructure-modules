@@ -65,12 +65,6 @@ module "vpc_endpoints" {
       route_table_ids = module.vpc.private_route_table_ids
       tags            = merge(local.tags, { Name = "dynamodb-vpc-endpoint" })
     },
-    cognito_idp = {
-      service             = "cognito-idp"
-      private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      tags                = merge(local.tags, { Name = "cognito-idp-vpc-endpoint" })
-    }
     secretsmanager = {
       service             = "secretsmanager"
       private_dns_enabled = true
