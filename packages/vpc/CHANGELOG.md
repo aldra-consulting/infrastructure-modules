@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/aldra-consulting/infrastructure-modules/compare/vpc@0.5.0...vpc@0.5.1) (2023-10-27)
+
+
+### Bug Fixes
+
+* **vpc:** remove unnecessary Cognito IDP endpoint ([5134298](https://github.com/aldra-consulting/infrastructure-modules/commit/5134298332a0807fe4002f1dc0dc1f5a082a8d9a))
+
+
+
 ## [0.5.0](https://github.com/aldra-consulting/infrastructure-modules/compare/vpc@0.4.0...vpc@0.5.0) (2023-10-27)
 
 
