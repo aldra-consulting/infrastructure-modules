@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.0](https://github.com/aldra-consulting/infrastructure-modules/compare/vpc@0.5.1...vpc@0.6.0) (2023-10-27)
+
+
+### Features
+
+* **vpc:** add single NAT gateway ([aa0c0e8](https://github.com/aldra-consulting/infrastructure-modules/commit/aa0c0e8e8fd2c5d5c151555790c74e70821e4518))
+
+
+
 ## [0.5.1](https://github.com/aldra-consulting/infrastructure-modules/compare/vpc@0.5.0...vpc@0.5.1) (2023-10-27)
 
 
