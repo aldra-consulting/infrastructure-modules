@@ -34,12 +34,27 @@ variable "cloudfront_distributions" {
     domain_name = string
     name        = string
     cache_behaviours = list(object({
-      path = optional(string)
-      type = string
-      origin = object({
-        id          = string
-        domain_name = string
-      })
+      path                = optional(string)
+      type                = string
+      disable_cache       = optional(bool, false)
+      rewrite_request_url = optional(bool, false)
+      target_origin_id    = string
     }))
+    api_gateway_origins = optional(list(object({
+      id          = string
+      domain_name = string
+      origin_path = optional(string)
+    })), [])
+    s3_origins = optional(list(object({
+      id            = string
+      domain_name   = string
+      s3_bucket_id  = string
+      s3_bucket_arn = string
+    })), [])
+    custom_error_response = optional(list(object({
+      error_code         = number
+      response_code      = number
+      response_page_path = string
+    })))
   }))
 }
